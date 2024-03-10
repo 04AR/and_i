@@ -20,8 +20,8 @@ class and_i_Sense extends ChangeNotifier{
       test_data[0] = event.x;
       test_data[1] = event.y;
       test_data[2] = event.z;
-    });
-    notifyListeners();
+      notifyListeners();
+    }).single;
   }
 
   List<double> get_acc() {
