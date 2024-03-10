@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:and_i/home.dart';
+import 'package:and_i/routes/home.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));

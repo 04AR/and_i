@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 
-import 'package:and_i/and_i.dart';
-import 'package:and_i/sensors_data.dart';
+import 'package:and_i/and_i/and_i.dart';
+import 'package:and_i/and_i/and_i_Sense.dart';
 
 class home extends ConsumerWidget {
    const home({super.key});
