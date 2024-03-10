@@ -37,7 +37,7 @@ class and_i extends ChangeNotifier{
   //                              0x1d : "",
   //                              };
 
-  String usb = '';
+  String usb = "No device connected";
   UsbPort? _port;
 
   and_i() {
@@ -49,7 +49,7 @@ class and_i extends ChangeNotifier{
       }
       if (e.event == UsbEvent.ACTION_USB_DETACHED) {
         _port!.close();
-        usb = "";
+        usb = "No device connected";
         notifyListeners();
       }
     });

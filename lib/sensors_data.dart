@@ -1,29 +1,39 @@
-import 'dart:async';
-
 import 'package:flutter/material.dart';
 import "package:sensors_plus/sensors_plus.dart";
-import 'package:location/location.dart';
 
 class and_i_Sense extends ChangeNotifier{
-  UserAccelerometerEvent? _userAccelerometerEvent;
-  AccelerometerEvent? _accelerometerEvent;
-  GyroscopeEvent? _gyroscopeEvent;
-  MagnetometerEvent? _magnetometerEvent;
 
-  int? _userAccelerometerLastInterval;
-  int? _accelerometerLastInterval;
-  int? _gyroscopeLastInterval;
-  int? _magnetometerLastInterval;
+   List<double> test_data = [0, 0, 0];
+
+  // UserAccelerometerEvent? _userAccelerometerEvent;
+  // AccelerometerEvent? _accelerometerEvent;
+  // GyroscopeEvent? _gyroscopeEvent;
+  // MagnetometerEvent? _magnetometerEvent;
+
+  // int? _userAccelerometerLastInterval;
+  // int? _accelerometerLastInterval;
+  // int? _gyroscopeLastInterval;
+  // int? _magnetometerLastInterval;
 
   Duration sensorInterval = SensorInterval.normalInterval;
 
-  final _streamSubscriptions = <StreamSubscription<dynamic>>[];
+  // final _streamSubscriptions = <StreamSubscription<dynamic>>[];
 
   void get_usrAcc() {
     userAccelerometerEventStream(samplingPeriod: sensorInterval)
         .listen((UserAccelerometerEvent event) {
       print(event);
     });
+  }
+
+  void get_sense() {
+    accelerometerEventStream(samplingPeriod: sensorInterval)
+        .map((AccelerometerEvent event) {
+      test_data[0] = event.x;
+      test_data[1] = event.y;
+      test_data[2] = event.z;
+    });
+    notifyListeners();
   }
 
   List<double> get_acc() {

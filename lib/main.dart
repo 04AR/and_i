@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'package:and_i/and_i.dart';
-// import 'sensors_data.dart';
+import 'package:and_i/home.dart';
 
 void main() {
   runApp(ProviderScope(child: MyApp()));
@@ -28,7 +27,7 @@ class MyApp extends StatelessWidget {
                 children: const [
                   DrawerHeader(
                     decoration: BoxDecoration(
-                      color: Colors.black,
+                      color: Colors.blueGrey,
                     ),
                     child: Text('Drawer Header'),
                   ),
@@ -42,29 +41,5 @@ class MyApp extends StatelessWidget {
               ),
             ),
             body: home()));
-  }
-}
-
-class home extends ConsumerWidget {
-   home({super.key});
-
-  static final usb_data = ChangeNotifierProvider<and_i>((ref) {
-    return and_i();
-  });
-
-  // static final sense = ChangeNotifierProvider<and_i_Sense>((ref) {
-  //   return and_i_Sense();
-  // });
-
-  @override
-  Widget build(BuildContext context, WidgetRef ref) {
-    return Center(
-      child: Column(
-        children: [
-          Text(ref.watch(usb_data).usb),
-          // FloatingActionButton(onPressed: );
-        ],
-      ),
-    );
   }
 }
