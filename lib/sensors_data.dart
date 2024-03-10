@@ -5,19 +5,7 @@ class and_i_Sense extends ChangeNotifier{
 
    List<double> test_data = [0, 0, 0];
 
-  // UserAccelerometerEvent? _userAccelerometerEvent;
-  // AccelerometerEvent? _accelerometerEvent;
-  // GyroscopeEvent? _gyroscopeEvent;
-  // MagnetometerEvent? _magnetometerEvent;
-
-  // int? _userAccelerometerLastInterval;
-  // int? _accelerometerLastInterval;
-  // int? _gyroscopeLastInterval;
-  // int? _magnetometerLastInterval;
-
   Duration sensorInterval = SensorInterval.normalInterval;
-
-  // final _streamSubscriptions = <StreamSubscription<dynamic>>[];
 
   void get_usrAcc() {
     userAccelerometerEventStream(samplingPeriod: sensorInterval)

@@ -17,7 +17,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
         title: 'And_i',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.lightBlue),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
           useMaterial3: true,
         ),
         home: Scaffold(
@@ -40,6 +40,6 @@ class MyApp extends StatelessWidget {
                 ],
               ),
             ),
-            body: home()));
+            body: const home()));
   }
 }

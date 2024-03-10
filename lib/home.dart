@@ -6,7 +6,7 @@ import 'package:and_i/and_i.dart';
 import 'package:and_i/sensors_data.dart';
 
 class home extends ConsumerWidget {
-   home({super.key});
+   const home({super.key});
 
   static final usb_data = ChangeNotifierProvider<and_i>((ref) {
     return and_i();
@@ -20,17 +20,19 @@ class home extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Center(
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: [
           Text(ref.watch(usb_data).usb),
 
-          IconButton(onPressed: (){
+          Text("x${ref.watch(sense).test_data[0]}"),
+          Text("y${ref.watch(sense).test_data[1]}"),
+          Text("z${ref.watch(sense).test_data[2]}"),
+          
+          ElevatedButton.icon(onPressed: (){
             ref.read(sense).get_sense();
 
-          }, icon: const Icon(Icons.app_shortcut)),
-
-          Text("x${ref.watch(sense).test_data[0]}"),
-          Text("x${ref.watch(sense).test_data[1]}"),
-          Text("x${ref.watch(sense).test_data[3]}"),
+          }, icon: const Icon(Icons.app_shortcut), 
+          label: const Text("get_data")),
         ],
       ),
     );
