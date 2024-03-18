@@ -1,3 +1,4 @@
+import 'package:and_i/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -6,18 +7,18 @@ class Serial_monitor extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return const Column(
-      children: [
-        Row(
-          children: [
-            Text("S E R I A L  M O N I T O R"),
-
-            Text("BPS : 115200")
-          ],
-        ),
-
-        Text(""),
-      ],
+    return  Scaffold(
+      appBar: AppBar(title: const Text("S E R I A L   M O N I T O R")),
+      body: Column(
+        children: [
+          Text("BPS : ${ref.watch(and_i_Port).buad_rate}"),
+          ListView.builder(
+            itemCount: ref.watch(and_i_Port).serial_cmd.length,
+            itemBuilder: (context, index) {
+              return Text(ref.watch(and_i_Port).serial_cmd[index]);
+          })
+        ],
+      ),
     );
   }
 }

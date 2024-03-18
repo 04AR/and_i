@@ -1,45 +1,41 @@
+import 'package:and_i/routes/serial_monitor.dart';
+import 'package:and_i/routes/settings.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:and_i/routes/home.dart';
+import 'package:and_i/and_i/and_i.dart';
+import 'package:and_i/and_i/and_i_Sense.dart';
 
 void main() {
-  runApp(ProviderScope(child: MyApp()));
+  runApp(const ProviderScope(child: App()));
 }
 
-class MyApp extends StatelessWidget {
-  MyApp({super.key});
+final and_i_Port = ChangeNotifierProvider<and_i>((ref) {
+  return and_i();
+});
 
-  // final and_i _and_i = and_i();
+final sense = ChangeNotifierProvider<and_i_Sense>((ref) {
+  return and_i_Sense();
+});
+
+class App extends StatelessWidget {
+  const App({super.key});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+        initialRoute: '/',
+        routes: {
+          '/': (context) => const home(),
+          '/serial_monitor': (context) => const Serial_monitor(),
+          '/settings': (context) => const Settings(),
+        },
         title: 'And_i',
         theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
           useMaterial3: true,
         ),
-        home: Scaffold(
-            appBar: AppBar(title: const Text("T I T L E")),
-            drawer: Drawer(
-              child: ListView(
-                children: const [
-                  DrawerHeader(
-                    decoration: BoxDecoration(
-                      color: Colors.blueGrey,
-                    ),
-                    child: Text('Drawer Header'),
-                  ),
-                  ListTile(
-                    title: Text('Item 1'),
-                  ),
-                  ListTile(
-                    title: Text('Item 2'),
-                  )
-                ],
-              ),
-            ),
-            body: const home()));
+      );
   }
 }

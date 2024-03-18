@@ -1,7 +1,8 @@
 import 'dart:typed_data';
-// import 'package:usb_serial/transaction.dart';
 import 'package:flutter/material.dart';
 import 'package:usb_serial/usb_serial.dart';
+import 'package:usb_serial/transaction.dart';
+// import 'package:usb_serial/transformers.dart';
 
 
 class and_i extends ChangeNotifier{
@@ -37,8 +38,13 @@ class and_i extends ChangeNotifier{
   //                              0x1d : "",
   //                              };
 
-  String usb = "No device connected";
+  int buad_rate = 115200;
   UsbPort? _port;
+
+  final List serial_cmd = [];
+
+  String cmd = "*****";
+  String usb = "No device connected";
 
   and_i() {
     UsbSerial.usbEventStream!.listen((UsbEvent e) {
@@ -63,14 +69,28 @@ class and_i extends ChangeNotifier{
     await _port!.setDTR(true);
     await _port!.setRTS(true);
     await _port!.setPortParameters(
-        115200, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_EVEN);
+        buad_rate, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_EVEN);
+
+    read_serial();
   }
 
-  bool read_serial() {
-    _port!.inputStream!.listen((event) {
-      print(event);
+  void read_serial() {
+
+    var tran = Transaction.terminated(_port!.inputStream!, Uint8List.fromList([13, 10]));
+
+    tran.stream.listen((data){
+      serial_cmd.add(data);
     });
-    return true;
+    
+    // _port!.inputStream!.listen((event) {
+    //   switch (event) {
+    //     case [0x1]:
+    //       cmd = "acc";
+    //       notifyListeners();
+    //       break;
+    //     default:
+    //   }
+    // });
   }
 
   Future<bool> write_serial(Uint8List data) async {
