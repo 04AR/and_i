@@ -1,47 +1,18 @@
+import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
+// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:usb_serial/usb_serial.dart';
-import 'package:usb_serial/transaction.dart';
-// import 'package:usb_serial/transformers.dart';
+import 'package:and_i/and_i/and_i_Sense.dart';
 
-
-class and_i extends ChangeNotifier{
-
-  // Map<int, String> commands = {0x1 : "acc",
-  //                              0x2 : "gyr",
-  //                              0x3 : "mag",
-  //                              0x4 : "ori",
-  //                              0x5 : "lum",
-  //                              0x6 : "clk",
-  //                              0x7 : "btr",
-  //                              0x8 : "prx",
-  //                              0x9 : "geo",
-  //                              0xa : "ir",
-  //                              0xb : "pre",
-  //                              0xc : "alt",
-  //                              0xd : "tch",
-  //                              0xe : "comp",
-  //                              0xf : "cam",
-  //                              0x10 : "rfid",
-  //                              0x11 : "rel_acc",
-  //                              0x12 : "rel_gyr",
-  //                              0x13 : "rel_mag",
-  //                              0x14 : "rel_ori",
-  //                              0x15 : "pic",
-  //                              0x16 : "fg_id",
-  //                              0x17 : "fc_id",
-  //                              0x18 : "",
-  //                              0x19 : "",
-  //                              0x1a : "",
-  //                              0x1b : "",
-  //                              0x1c : "",
-  //                              0x1d : "",
-  //                              };
-
+class and_i extends ChangeNotifier {
+  
   int buad_rate = 115200;
   UsbPort? _port;
 
-  final List serial_cmd = [];
+  and_i_Sense sensors =  and_i_Sense();
+
+  String serial_cmd = "***";
 
   String cmd = "*****";
   String usb = "No device connected";
@@ -49,7 +20,7 @@ class and_i extends ChangeNotifier{
   and_i() {
     UsbSerial.usbEventStream!.listen((UsbEvent e) {
       if (e.event == UsbEvent.ACTION_USB_ATTACHED) {
-        get_port(e);
+        get_port(e, buad_rate);
         usb = e.device!.deviceName;
         notifyListeners();
       }
@@ -61,7 +32,7 @@ class and_i extends ChangeNotifier{
     });
   }
 
-  void get_port(UsbEvent event) async {
+  void get_port(UsbEvent event, int bps) async {
     _port = await event.device!.create();
     if (await (_port!.open()) != true) {
       return;
@@ -69,35 +40,30 @@ class and_i extends ChangeNotifier{
     await _port!.setDTR(true);
     await _port!.setRTS(true);
     await _port!.setPortParameters(
-        buad_rate, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_EVEN);
+        bps, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
     read_serial();
   }
 
   void read_serial() {
-
-    var tran = Transaction.terminated(_port!.inputStream!, Uint8List.fromList([13, 10]));
-
-    tran.stream.listen((data){
-      serial_cmd.add(data);
+    _port?.inputStream?.listen((event) {
+      int cmd = event.first;
+      switch (cmd) {
+        case 0x64:
+          serial_cmd += "A";
+          break;
+        case 0x12:
+          write_serial(Uint8List.fromList(sensors.get_acc().toString().codeUnits));
+          break;
+        default:
+          serial_cmd += utf8.decode(event);
+      }
+      notifyListeners();
     });
-    
-    // _port!.inputStream!.listen((event) {
-    //   switch (event) {
-    //     case [0x1]:
-    //       cmd = "acc";
-    //       notifyListeners();
-    //       break;
-    //     default:
-    //   }
-    // });
   }
 
   Future<bool> write_serial(Uint8List data) async {
     await _port!.write(data);
     return true;
   }
-
 }
-
-

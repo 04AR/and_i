@@ -16,7 +16,7 @@ class home extends ConsumerWidget {
               decoration: BoxDecoration(
                 color: Colors.blueGrey,
               ),
-              child: Text('Drawer Header'),
+              child: Text('H E A D E R'),
             ),
             ListTile(
               leading: const Icon(Icons.home),
