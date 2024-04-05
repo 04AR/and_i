@@ -52,7 +52,7 @@ class and_i extends ChangeNotifier {
         case 0x64:
           serial_cmd += "A";
           break;
-        case 0x12:
+        case 0x80:
           write_serial(Uint8List.fromList(sensors.get_acc().toString().codeUnits));
           break;
         default:
