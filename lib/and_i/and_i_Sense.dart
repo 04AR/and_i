@@ -8,61 +8,56 @@ class and_i_Sense extends ChangeNotifier {
 
   Duration sensorInterval = SensorInterval.normalInterval;
 
-  List<double> get_usrAcc() {
-    List<double> usr_acc = [0, 0, 0];
-
-    userAccelerometerEventStream(samplingPeriod: sensorInterval)
-        .map((UserAccelerometerEvent event) {
-      usr_acc[0] = event.x;
-      usr_acc[1] = event.y;
-      usr_acc[2] = event.z;
-    }).single;
-
-    return usr_acc;
-  }
-
-  void get_sense() async {
-    accelerometerEventStream(samplingPeriod: sensorInterval)
-        .map((AccelerometerEvent event) {
-      test_data[0] = event.x;
-      test_data[1] = event.y;
-      test_data[2] = event.z;
+  void get_sense() {
+    accelerometerEventStream().first.then((value) {
+      test_data[0] = value.x;
+      test_data[1] = value.y;
+      test_data[2] = value.z;
       notifyListeners();
-    }).single;
+    });
   }
 
-  List<double> get_acc() {
-    List<double> acc = [0, 0, 0];
+  Future<Float32List> get_acc() async {
+    Float32List acc = Float32List(3);
 
-    accelerometerEventStream(samplingPeriod: sensorInterval)
-        .map((AccelerometerEvent event) {
-      acc[0] = event.x;
-      acc[1] = event.y;
-      acc[2] = event.z;
-    }).single;
+    await accelerometerEventStream().first.then((value) {
+      acc[0] = value.x;
+      acc[1] = value.y;
+      acc[2] = value.z;
+    });
     return acc;
   }
 
-  List<double> get_gyro() {
-    List<double> gyro = [0, 0, 0];
-    gyroscopeEventStream(samplingPeriod: sensorInterval)
-        .map((GyroscopeEvent event) {
-      gyro[0] = event.x;
-      gyro[1] = event.y;
-      gyro[2] = event.z;
-    }).single;
+  Future<Float32List> get_gyro() async {
+    Float32List gyro = Float32List(3);
+    await gyroscopeEventStream().first.then((value) {
+      gyro[0] = value.x;
+      gyro[1] = value.y;
+      gyro[2] = value.z;
+    });
 
     return gyro;
   }
 
-  List<double> get_magno() {
-    List<double> magno = [0, 0, 0];
-    magnetometerEventStream(samplingPeriod: sensorInterval)
-        .map((MagnetometerEvent event) {
-      magno[0] = event.x;
-      magno[1] = event.x;
-      magno[2] = event.x;
-    }).single;
+  Future<Float32List> get_magno() async{
+    Float32List magno = Float32List(3);
+    await magnetometerEventStream().first.then((value) {
+      magno[0] = value.x;
+      magno[1] = value.y;
+      magno[2] = value.z;
+    });
     return magno;
+  }
+
+  Future<Float32List> get_usrAcc() async{
+    Float32List usr_acc = Float32List(3);
+
+    await accelerometerEventStream().first.then((value) {
+      usr_acc[0] = value.x;
+      usr_acc[1] = value.y;
+      usr_acc[2] = value.z;
+    });
+
+    return usr_acc;
   }
 }

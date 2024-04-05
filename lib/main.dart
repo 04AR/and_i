@@ -15,10 +15,6 @@ final and_i_Port = ChangeNotifierProvider<and_i>((ref) {
   return and_i();
 });
 
-// final Provider = StateProvider<and_i>((ref) {
-//   return and_i();
-// });
-
 final sense = ChangeNotifierProvider<and_i_Sense>((ref) {
   return and_i_Sense();
 });

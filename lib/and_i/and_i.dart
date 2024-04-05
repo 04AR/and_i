@@ -6,15 +6,13 @@ import 'package:usb_serial/usb_serial.dart';
 import 'package:and_i/and_i/and_i_Sense.dart';
 
 class and_i extends ChangeNotifier {
-  
   int buad_rate = 115200;
   UsbPort? _port;
 
-  and_i_Sense sensors =  and_i_Sense();
+  and_i_Sense sensors = and_i_Sense();
 
   String serial_cmd = "***";
 
-  String cmd = "*****";
   String usb = "No device connected";
 
   and_i() {
@@ -46,17 +44,36 @@ class and_i extends ChangeNotifier {
   }
 
   void read_serial() {
-    _port?.inputStream?.listen((event) {
+    _port?.inputStream?.listen((event) async {
       int cmd = event.first;
-      switch (cmd) {
-        case 0x64:
-          serial_cmd += "A";
-          break;
-        case 0x80:
-          write_serial(Uint8List.fromList(sensors.get_acc().toString().codeUnits));
-          break;
-        default:
-          serial_cmd += utf8.decode(event);
+
+      if (cmd < 0x80) {
+        serial_cmd += utf8.decode(event);
+      } else {
+        switch (cmd) {
+          case 0x80:
+            await sensors.get_acc().then((value) {
+              write_serial(Uint8List.view(value.buffer));
+            });
+            break;
+          case 0x81:
+            await sensors.get_gyro().then((value) {
+              write_serial(Uint8List.view(value.buffer));
+            });
+            break;
+          case 0x82:
+            await sensors.get_magno().then((value) {
+              write_serial(Uint8List.view(value.buffer));
+            });
+            break;
+          case 0x83:
+            await sensors.get_usrAcc().then((value) {
+              write_serial(Uint8List.view(value.buffer));
+            });
+            break;
+          default:
+            serial_cmd += "$event";
+        }
       }
       notifyListeners();
     });

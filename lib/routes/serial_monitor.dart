@@ -7,17 +7,16 @@ class Serial_monitor extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    return  Scaffold(
+    return Scaffold(
       appBar: AppBar(title: const Text("S E R I A L   M O N I T O R")),
       body: Column(
         children: [
           Text("BPS : ${ref.watch(and_i_Port).buad_rate}"),
-          Text(ref.watch(and_i_Port).serial_cmd),
-          // ListView.builder(
-          //   itemCount: ref.watch(and_i_Port).serial_cmd.length,
-          //   itemBuilder: (context, index) {
-          //     return Text(ref.watch(and_i_Port).serial_cmd[index]);
-          // })
+          ListView(
+            children: [
+              Text(ref.watch(and_i_Port).serial_cmd),
+            ],
+          ),
         ],
       ),
     );
