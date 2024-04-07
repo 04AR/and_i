@@ -9,14 +9,20 @@ class Serial_monitor extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       appBar: AppBar(title: const Text("S E R I A L   M O N I T O R")),
-      body: Column(
+      body: ListView(
         children: [
-          Text("BPS : ${ref.watch(and_i_Port).buad_rate}"),
-          ListView(
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(ref.watch(and_i_Port).serial_cmd),
-            ],
-          ),
+            Text("BPS : ${ref.watch(and_i_Port).buad_rate}"),
+            ElevatedButton.icon(
+                onPressed: () {
+                  ref.read(and_i_Port).Clr_Serial();
+                },
+                icon: const Icon(Icons.article_rounded),
+                label: const Text("CLEAR"))
+          ]),
+          Text(ref.watch(and_i_Port).serial_data),
         ],
       ),
     );

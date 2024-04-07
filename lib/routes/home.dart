@@ -47,15 +47,6 @@ class home extends ConsumerWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(ref.watch(and_i_Port).usb),
-            Text("x${ref.watch(sense).test_data[0]}"),
-            Text("y${ref.watch(sense).test_data[1]}"),
-            Text("z${ref.watch(sense).test_data[2]}"),
-            ElevatedButton.icon(
-                onPressed: () {
-                  ref.read(sense).get_sense();
-                },
-                icon: const Icon(Icons.app_shortcut),
-                label: const Text("get_data")),
           ],
         ),
       ),

@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-// import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:usb_serial/usb_serial.dart';
 import 'package:and_i/and_i/and_i_Sense.dart';
 
@@ -11,7 +10,7 @@ class and_i extends ChangeNotifier {
 
   and_i_Sense sensors = and_i_Sense();
 
-  String serial_cmd = "***";
+  String serial_data = "";
 
   String usb = "No device connected";
 
@@ -30,6 +29,10 @@ class and_i extends ChangeNotifier {
     });
   }
 
+  void Clr_Serial(){
+    serial_data = "";
+  }
+
   void get_port(UsbEvent event, int bps) async {
     _port = await event.device!.create();
     if (await (_port!.open()) != true) {
@@ -40,6 +43,8 @@ class and_i extends ChangeNotifier {
     await _port!.setPortParameters(
         bps, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
+    write_serial(Uint8List.fromList([0x40]));
+
     read_serial();
   }
 
@@ -48,7 +53,7 @@ class and_i extends ChangeNotifier {
       int cmd = event.first;
 
       if (cmd < 0x80) {
-        serial_cmd += utf8.decode(event);
+        serial_data += utf8.decode(event);
       } else {
         switch (cmd) {
           case 0x80:
@@ -72,7 +77,7 @@ class and_i extends ChangeNotifier {
             });
             break;
           default:
-            serial_cmd += "$event";
+            serial_data += "$event";
         }
       }
       notifyListeners();

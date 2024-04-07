@@ -5,7 +5,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:and_i/routes/home.dart';
 import 'package:and_i/and_i/and_i.dart';
-import 'package:and_i/and_i/and_i_Sense.dart';
 
 void main() {
   runApp(const ProviderScope(child: App()));
@@ -13,10 +12,6 @@ void main() {
 
 final and_i_Port = ChangeNotifierProvider<and_i>((ref) {
   return and_i();
-});
-
-final sense = ChangeNotifierProvider<and_i_Sense>((ref) {
-  return and_i_Sense();
 });
 
 class App extends StatelessWidget {
