@@ -72,7 +72,7 @@ class and_i extends ChangeNotifier {
             });
             break;
           case 0x83:
-            await sensors.get_usrAcc().then((value) {
+            await sensors.get_orient().then((value) {
               write_serial(Uint8List.view(value.buffer));
             });
             break;

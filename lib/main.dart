@@ -23,7 +23,7 @@ class App extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const home(),
-          '/serial_monitor': (context) => const Serial_monitor(),
+          '/serial_monitor': (context) => Serial_monitor(),
           '/settings': (context) => const Settings(),
         },
         title: 'And_i',

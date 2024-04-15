@@ -39,6 +39,7 @@ dependencies:
   flutter_riverpod: ^2.4.10
   sensors_plus: ^4.0.2
   shared_preferences: ^2.2.2
+  motion_sensors: ^0.1.0
 
 dev_dependencies:
   flutter_test:
