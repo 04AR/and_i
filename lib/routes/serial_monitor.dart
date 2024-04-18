@@ -10,7 +10,7 @@ class Serial_monitor extends ConsumerWidget {
   void _scrollDown() {
     _scrollController.animateTo(
       _scrollController.position.maxScrollExtent,
-      duration: const Duration(seconds: 2),
+      duration: const Duration(seconds: 1),
       curve: Curves.fastOutSlowIn,
     );
   }
@@ -31,6 +31,7 @@ class Serial_monitor extends ConsumerWidget {
             ElevatedButton.icon(
                 onPressed: () {
                   ref.read(and_i_Port).Clr_Serial();
+                  ref.watch(and_i_Port).serial_data = '';
                 },
                 icon: const Icon(Icons.article_rounded),
                 label: const Text("CLEAR"))
