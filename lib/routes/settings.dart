@@ -15,7 +15,7 @@ class Settings extends ConsumerWidget {
             title: Text("usb Port : ${ref.watch(and_i_Port).usb}")
           ),
           ListTile(
-            title: Text("Baud Rate : ${ref.watch(and_i_Port).buad_rate}"),
+            title: Text("Baud Rate : ${ref.watch(and_i_Port).buadRate}"),
           ),
         ],
       ),

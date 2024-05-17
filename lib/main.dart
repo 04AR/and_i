@@ -1,9 +1,12 @@
-import 'package:and_i/routes/serial_monitor.dart';
-import 'package:and_i/routes/settings.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:and_i/routes/home.dart';
+import 'package:and_i/and_i/emote.dart';
+import 'package:and_i/routes/serial_monitor.dart';
+import 'package:and_i/routes/settings.dart';
+
 import 'package:and_i/and_i/and_i.dart';
 
 void main() {
@@ -23,12 +26,13 @@ class App extends StatelessWidget {
         initialRoute: '/',
         routes: {
           '/': (context) => const home(),
+          '/emote': (context) => const Emote(),
           '/serial_monitor': (context) => Serial_monitor(),
           '/settings': (context) => const Settings(),
         },
         title: 'And_i',
         theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.black),
+          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
           useMaterial3: true,
         ),
       );

@@ -27,16 +27,16 @@ class Serial_monitor extends ConsumerWidget {
         controller: _scrollController,
         children: [
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text("BPS : ${ref.watch(and_i_Port).buad_rate}"),
+            Text("BPS : ${ref.watch(and_i_Port).buadRate}"),
             ElevatedButton.icon(
                 onPressed: () {
-                  ref.read(and_i_Port).Clr_Serial();
-                  ref.watch(and_i_Port).serial_data = '';
+                  ref.read(and_i_Port).clrSerial();
+                  ref.watch(and_i_Port).serialData = '';
                 },
                 icon: const Icon(Icons.article_rounded),
                 label: const Text("CLEAR"))
           ]),
-          Text(ref.watch(and_i_Port).serial_data),
+          Text(ref.watch(and_i_Port).serialData),
         ],
       ),
     );

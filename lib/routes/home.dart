@@ -26,6 +26,13 @@ class home extends ConsumerWidget {
               },
             ),
             ListTile(
+              leading: const Icon(Icons.person),
+              title: const Text('Emote'),
+              onTap: () {
+                Navigator.pushNamed(context, '/emote');
+              },
+            ),
+            ListTile(
               leading: const Icon(Icons.monitor_heart),
               title: const Text('Serial Monitor'),
               onTap: () {
