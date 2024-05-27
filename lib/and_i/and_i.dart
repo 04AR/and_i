@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -32,7 +30,7 @@ class and_i extends ChangeNotifier {
   static const int COORDS = 0x91;
   static const int LATITUDE = 0x92;
   static const int LONGITUDE = 0x93;
-  static const int ALTITUDEs = 0x94;
+  static const int ALTITUDE = 0x94;
 
   and_i() {
     UsbSerial.usbEventStream!.listen((UsbEvent e) {

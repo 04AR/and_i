@@ -16,8 +16,8 @@ class _EmoteState extends State<Emote> {
       backgroundColor: Colors.black,
       body: Center(
         child: SvgPicture.asset(
-          'assets/svgs/bitmap_idle',
-          height: MediaQuery.sizeOf(context).height * 0.7,
+          'assets/svgs/Idle.svg',
+          // height: MediaQuery.sizeOf(context).height * 0.7,
         ),
       ),
     );
