@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import 'package:and_i/routes/home.dart';
-import 'package:and_i/and_i/emote.dart';
+import 'package:and_i/and_i/emoticons.dart';
 import 'package:and_i/routes/serial_monitor.dart';
 import 'package:and_i/routes/settings.dart';
 

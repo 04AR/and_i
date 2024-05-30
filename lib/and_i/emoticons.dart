@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:auto_size_text/auto_size_text.dart';
 
 class Emote extends StatefulWidget {
   const Emote({super.key});
@@ -9,17 +9,16 @@ class Emote extends StatefulWidget {
 }
 
 class _EmoteState extends State<Emote> {
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: Colors.white,
       body: Center(
-        child: SvgPicture.asset(
-          'assets/svgs/Idle.svg',
-          // height: MediaQuery.sizeOf(context).height * 0.7,
-        ),
-      ),
+          child: AutoSizeText(
+        "☆*: .｡. o(≧▽≦)o .｡.:*☆",
+        style: TextStyle(fontSize: 150),
+        maxLines: 1,
+      )),
     );
   }
 }

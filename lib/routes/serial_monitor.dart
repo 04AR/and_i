@@ -26,16 +26,19 @@ class Serial_monitor extends ConsumerWidget {
       body: ListView(
         controller: _scrollController,
         children: [
-          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Text("BPS : ${ref.watch(and_i_Port).buadRate}"),
-            ElevatedButton.icon(
-                onPressed: () {
-                  ref.read(and_i_Port).clrSerial();
-                  ref.watch(and_i_Port).serialData = '';
-                },
-                icon: const Icon(Icons.article_rounded),
-                label: const Text("CLEAR"))
-          ]),
+          Padding(
+            padding: const EdgeInsets.all(10.0),
+            child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+              Text("BPS : ${ref.watch(and_i_Port).buadRate}"),
+              ElevatedButton.icon(
+                  onPressed: () {
+                    ref.read(and_i_Port).clrSerial();
+                    ref.watch(and_i_Port).serialData = '';
+                  },
+                  icon: const Icon(Icons.article_rounded),
+                  label: const Text("CLEAR"))
+            ]),
+          ),
           Text(ref.watch(and_i_Port).serialData),
         ],
       ),

@@ -41,8 +41,8 @@ dependencies:
   environment_sensors: ^0.3.0
   geolocator: ^11.0.0
   flutter_riverpod: ^2.4.10
-  flutter_svg: ^2.0.10+1
   lottie: ^3.1.2
+  auto_size_text: ^3.0.0
 
 dev_dependencies:
   flutter_test:
@@ -67,13 +67,8 @@ flutter:
   uses-material-design: true
 
   # To add assets to your application, add an assets section, like this:
-  assets:
-    - assets/svgs/Idle.svg
-    - assets/svgs/closed_eyes.svg
-    - assets/svgs/happy_eyes.svg
-    - assets/svgs/angry_eyes.svg
-    - assets/svgs/sad_eyes.svg
-    - assets/svgs/derpy_eyes.svg
+  # assets:
+    
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware

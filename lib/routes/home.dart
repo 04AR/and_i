@@ -8,7 +8,7 @@ class home extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text("T I T L E")),
+      appBar: AppBar(title: const Text("")),
       drawer: Drawer(
         child: ListView(
           children: [
