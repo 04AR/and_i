@@ -33,7 +33,6 @@ class Serial_monitor extends ConsumerWidget {
               ElevatedButton.icon(
                   onPressed: () {
                     ref.read(and_i_Port).clrSerial();
-                    ref.watch(and_i_Port).serialData = '';
                   },
                   icon: const Icon(Icons.article_rounded),
                   label: const Text("CLEAR"))

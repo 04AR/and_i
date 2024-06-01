@@ -1,5 +1,4 @@
 // ignore_for_file: constant_identifier_names
-
 import 'dart:convert';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ class and_i extends ChangeNotifier {
   String serialData = "";
 
   String usb = "No device connected";
-
 
   // sensor codes
   static const int ACCELEROMETER = 0x80;
@@ -51,6 +49,7 @@ class and_i extends ChangeNotifier {
 
   void clrSerial() {
     serialData = "";
+    notifyListeners();
   }
 
   void getPort(UsbEvent event, int bps) async {

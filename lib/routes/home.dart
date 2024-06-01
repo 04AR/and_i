@@ -13,9 +13,6 @@ class home extends ConsumerWidget {
         child: ListView(
           children: [
             const DrawerHeader(
-              decoration: BoxDecoration(
-                color: Colors.blueGrey,
-              ),
               child: Text('H E A D E R'),
             ),
             ListTile(
@@ -27,9 +24,9 @@ class home extends ConsumerWidget {
             ),
             ListTile(
               leading: const Icon(Icons.person),
-              title: const Text('Emote'),
+              title: const Text('Emoticons'),
               onTap: () {
-                Navigator.pushNamed(context, '/emote');
+                Navigator.pushNamed(context, '/emoticons');
               },
             ),
             ListTile(

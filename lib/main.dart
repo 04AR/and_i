@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'theme_data.dart';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'providers/setting_provider.dart';
 
 import 'package:and_i/routes/home.dart';
 import 'package:and_i/and_i/emoticons.dart';
@@ -16,24 +19,26 @@ final and_i_Port = ChangeNotifierProvider<and_i>((ref) {
   return and_i();
 });
 
-class App extends StatelessWidget {
+
+class App extends ConsumerWidget {
   const App({super.key});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+
+    final isDarkMode = ref.watch(themeProvider);
+
     return MaterialApp(
+        debugShowCheckedModeBanner: false,
         initialRoute: '/',
         routes: {
           '/': (context) => const home(),
-          '/emote': (context) => const Emote(),
+          '/emoticons': (context) => const Emoticons(),
           '/serial_monitor': (context) => Serial_monitor(),
-          '/settings': (context) => const Settings(),
+          '/settings': (context) => Settings(),
         },
         title: 'And_i',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.blue),
-          useMaterial3: true,
-        ),
+        theme: isDarkMode ? theme_dark : theme_light,
       );
   }
 }
