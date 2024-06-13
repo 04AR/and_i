@@ -1,25 +1,39 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+// import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:and_i/main.dart';
 import 'package:and_i/and_i/gemini.dart';
 
 class ThemeNotifier extends Notifier<bool> {
+  // late SharedPreferences prefers;
   @override
   bool build() {
-    return false;
+    return prefs.getBool('isdarkMode')??false;
   }
 
-  void toggleTheme() {
+  // ThemeNotifier(){
+  //   getPrefs();
+  // }
+
+  // void getPrefs() async {
+  //   prefers = await SharedPreferences.getInstance();
+  // }
+
+  void toggleTheme() async {
     state = !state;
+    prefs.setBool('isdarkMode', state);
   }
 }
 
-class GeminiApiNotifier extends Notifier<String>{
-   @override
+class GeminiApiNotifier extends Notifier<String> {
+  @override
   String build() {
-    return "";
+    return prefs.getString('geminiApi')??"";
   }
 
-  void get_API(String api){
+  void getAPI(String api) async {
     state = api;
+    prefs.setString('geminiApi', api);
   }
 }
 
@@ -27,12 +41,11 @@ final themeProvider = NotifierProvider<ThemeNotifier, bool>(() {
   return ThemeNotifier();
 });
 
-final geminiProvider = Provider((ref){
+final geminiProvider = Provider((ref) {
   Gemini gemini = Gemini(ref.watch(geminiApiProvider));
   return gemini;
 });
 
-final geminiApiProvider = NotifierProvider<GeminiApiNotifier, String>((){
+final geminiApiProvider = NotifierProvider<GeminiApiNotifier, String>(() {
   return GeminiApiNotifier();
 });
-

@@ -39,14 +39,17 @@ dependencies:
   usb_serial: ^0.5.1
   motion_sensors: ^0.1.0
   environment_sensors: ^0.3.0
-  camera: ^0.11.0+1
+  torch_light: ^1.0.0
   geolocator: ^11.0.0
+  camera: ^0.11.0+1
 
+  dropdown_button2: ^2.3.9
   auto_size_text: ^3.0.0
   animated_text_kit: ^4.2.2
   lottie: ^3.1.2
 
   google_generative_ai: ^0.4.2
+  speech_to_text: ^6.6.1
 
 dev_dependencies:
   flutter_test:

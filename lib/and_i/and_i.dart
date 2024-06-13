@@ -20,17 +20,17 @@ class and_i extends ChangeNotifier {
   static const int GYROSCOPE = 0x81;
   static const int MAGNOMETER = 0x82;
   static const int USR_ACCELEROMETER = 0x83;
-  static const int USR_GYROSCOPE = 0x84;
-  static const int ORIENT = 0x85;
-  static const int USR_ORIENT = 0x86;
-  static const int LUMEN = 0x87;
-  static const int PRESSURE = 0x88;
-  static const int HUMIDITY = 0x89;
-  static const int TEMP = 0x90;
-  static const int COORDS = 0x91;
-  static const int LATITUDE = 0x92;
-  static const int LONGITUDE = 0x93;
-  static const int ALTITUDE = 0x94;
+  static const int ORIENT = 0x84;
+  static const int ABS_ORIENT = 0x85;
+  static const int LUMEN = 0x86;
+  static const int PRESSURE = 0x87;
+  static const int HUMIDITY = 0x88;
+  // static const int TEMP = 0x89;
+  static const int COORDS = 0x8A;
+  static const int FLASHLIGHT = 0x8B;
+  static const int MIC = 0x8C;
+  static const int yIMG = 0x8D;
+  static const int SPEECH_REG = 0x8E;
 
   and_i() {
     UsbSerial.usbEventStream!.listen((UsbEvent e) {
@@ -62,6 +62,7 @@ class and_i extends ChangeNotifier {
     await _port!.setPortParameters(
         bps, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
+    // Initializing and_i on micro-controller by sending code
     writeSerial(Uint8List.fromList([0x40]));
 
     readSerial();
@@ -76,35 +77,44 @@ class and_i extends ChangeNotifier {
       } else {
         switch (cmd) {
           case ACCELEROMETER:
-            writeSerial(Uint8List.view(sensors.get_acc().buffer));
+            writeSerial(Uint8List.view(sensors.getAcc().buffer));
             break;
           case GYROSCOPE:
-            writeSerial(Uint8List.view(sensors.get_gyro().buffer));
+            writeSerial(Uint8List.view(sensors.getGyro().buffer));
             break;
           case MAGNOMETER:
-            writeSerial(Uint8List.view(sensors.get_magno().buffer));
-            break;
-          case ORIENT:
-            writeSerial(Uint8List.view(sensors.get_orient().buffer));
+            writeSerial(Uint8List.view(sensors.getMagno().buffer));
             break;
           case USR_ACCELEROMETER:
-            writeSerial(Uint8List.view(sensors.get_usrAcc().buffer));
+            writeSerial(Uint8List.view(sensors.getUsrAcc().buffer));
+            break;
+          case ORIENT:
+            writeSerial(Uint8List.view(sensors.getOrient().buffer));
+            break;
+          case ABS_ORIENT:
+            writeSerial(Uint8List.view(sensors.getAbsOrient().buffer));
             break;
           case LUMEN:
-            writeSerial(Uint8List.view(sensors.get_light().buffer));
+            writeSerial(Uint8List.view(sensors.getLumen().buffer));
             break;
           case HUMIDITY:
-            writeSerial(Uint8List.view(sensors.get_humd().buffer));
+            writeSerial(Uint8List.view(sensors.getHumid().buffer));
             break;
           case PRESSURE:
-            writeSerial(Uint8List.view(sensors.get_pres().buffer));
+            writeSerial(Uint8List.view(sensors.getPressure().buffer));
             break;
           case COORDS:
-            await sensors.curr_loc().then((value) {
+            await sensors.currLoc().then((value) {
               Float32List pos = Float32List(3);
               pos.addAll([value.latitude, value.longitude, value.altitude]);
               writeSerial(Uint8List.view(pos.buffer));
             });
+            break;
+          case FLASHLIGHT:
+            sensors.flash();
+            break;
+          case FLASHLIGHT:
+            sensors.flash();
             break;
           default:
             serialData += "$event";
@@ -114,8 +124,7 @@ class and_i extends ChangeNotifier {
     });
   }
 
-  Future<bool> writeSerial(Uint8List data) async {
+  Future<void> writeSerial(Uint8List data) async {
     _port!.write(data);
-    return true;
   }
 }

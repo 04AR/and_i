@@ -27,7 +27,7 @@ class Serial_monitor extends ConsumerWidget {
         controller: _scrollController,
         children: [
           Padding(
-            padding: const EdgeInsets.all(10.0),
+            padding: const EdgeInsets.all(20.0),
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
               Text("BPS : ${ref.watch(and_i_Port).buadRate}"),
               ElevatedButton.icon(

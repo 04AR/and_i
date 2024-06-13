@@ -1,6 +1,8 @@
-import 'package:and_i/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:dropdown_button2/dropdown_button2.dart';
+
+import 'package:and_i/and_i/emoticons.dart';
 
 class home extends ConsumerWidget {
   const home({super.key});
@@ -8,52 +10,78 @@ class home extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
-      appBar: AppBar(title: const Text("")),
-      drawer: Drawer(
-        child: ListView(
-          children: [
-            const DrawerHeader(
-              child: Text('H E A D E R'),
+      appBar: AppBar(
+        actions: [
+          DropdownButtonHideUnderline(
+              child: DropdownButton2(
+            customButton: const Icon(Icons.more_vert_rounded,size: 30,),
+            items: [
+              ...MenuItems.items.map(
+                (item) {
+                  return DropdownMenuItem<MenuItem>(
+                    value: item,
+                    child: MenuItems.buildItem(item),
+                  );
+                },
+              ),
+            ],
+            onChanged: (value) {
+              MenuItems.onChanged(context, value!);
+            },
+            dropdownStyleData: const DropdownStyleData(
+              width: 200,
             ),
-            ListTile(
-              leading: const Icon(Icons.home),
-              title: const Text('Home'),
-              onTap: () {
-                Navigator.pop(context);
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text('Emoticons'),
-              onTap: () {
-                Navigator.pushNamed(context, '/emoticons');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.monitor_heart),
-              title: const Text('Serial Monitor'),
-              onTap: () {
-                Navigator.pushNamed(context, '/serial_monitor');
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Settings'),
-              onTap: () {
-                Navigator.pushNamed(context, '/settings');
-              },
-            )
-          ],
-        ),
+          ))
+        ],
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(ref.watch(and_i_Port).usb),
-          ],
-        ),
-      ),
+      body: const Emoticons(),
     );
+  }
+}
+
+class MenuItem {
+  const MenuItem({
+    required this.text,
+    required this.icon,
+  });
+
+  final String text;
+  final IconData icon;
+}
+
+abstract class MenuItems {
+  static const List<MenuItem> items = [serialMonitor, camView,settings];
+
+  static const serialMonitor = MenuItem(text: 'Serial Monitor', icon: Icons.monitor_heart);
+  static const camView = MenuItem(text: "CamView", icon: Icons.camera_enhance);
+  static const settings = MenuItem(text: 'Settings', icon: Icons.settings);
+
+  static Widget buildItem(MenuItem item) {
+    return Row(
+      children: [
+        Icon(item.icon, size: 22),
+        const SizedBox(
+          width: 10,
+        ),
+        Expanded(
+          child: Text(
+            item.text,
+          ),
+        ),
+      ],
+    );
+  }
+
+  static void onChanged(BuildContext context, MenuItem item) {
+    switch (item) {
+      case MenuItems.serialMonitor:
+        Navigator.pushNamed(context, '/serial_monitor');
+        break;
+      case MenuItems.camView:
+        break;
+      case MenuItems.settings:
+        Navigator.pushNamed(context, '/settings');
+        break;
+    }
   }
 }

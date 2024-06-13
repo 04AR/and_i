@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'theme_data.dart';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -11,7 +12,11 @@ import 'package:and_i/routes/settings.dart';
 
 import 'package:and_i/and_i/and_i.dart';
 
-void main() {
+late SharedPreferences prefs;
+
+void main() async{
+  WidgetsFlutterBinding.ensureInitialized();
+  prefs = await SharedPreferences.getInstance();
   runApp(const ProviderScope(child: App()));
 }
 
@@ -38,6 +43,7 @@ class App extends ConsumerWidget {
           '/settings': (context) => Settings(),
         },
         title: 'And_i',
+        // darkTheme: theme_dark,
         theme: isDarkMode ? theme_dark : theme_light,
       );
   }
