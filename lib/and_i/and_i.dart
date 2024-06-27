@@ -1,17 +1,20 @@
 // ignore_for_file: constant_identifier_names
 import 'dart:convert';
 import 'dart:typed_data';
-import 'package:flutter/material.dart';
+import 'package:and_i/main.dart';
+// import 'package:flutter/material.dart';
 import 'package:usb_serial/usb_serial.dart';
 import 'package:and_i/and_i/and_i_Sense.dart';
 
-class and_i extends ChangeNotifier {
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+final and_i_Port = NotifierProvider<and_i, String>(() {
+  return and_i();
+});
+
+class and_i extends Notifier<String> {
   int buadRate = 115200;
   UsbPort? _port;
-
-  and_i_Sense sensors = and_i_Sense();
-
-  String serialData = "";
 
   String usb = "No device connected";
 
@@ -28,28 +31,36 @@ class and_i extends ChangeNotifier {
   // static const int TEMP = 0x89;
   static const int COORDS = 0x8A;
   static const int FLASHLIGHT = 0x8B;
-  static const int MIC = 0x8C;
-  static const int yIMG = 0x8D;
-  static const int SPEECH_REG = 0x8E;
+  // static const int MIC = 0x8C;
+  // static const int SPEECH_REG = 0x8E;
 
   and_i() {
+    // Listening the USB_ATTACHED event
     UsbSerial.usbEventStream!.listen((UsbEvent e) {
       if (e.event == UsbEvent.ACTION_USB_ATTACHED) {
         getPort(e, buadRate);
         usb = e.device!.deviceName;
-        notifyListeners();
+        SnackBarService.showSnackBar(content: "Connected");
+        state += "";
       }
       if (e.event == UsbEvent.ACTION_USB_DETACHED) {
         _port!.close();
         usb = "No device connected";
-        notifyListeners();
+        SnackBarService.showSnackBar(content: "Disconnected");
+        state += "\n";
       }
     });
   }
 
+  @override
+  String build() {
+    return "";
+  }
+
+  // Clearing Serial_Monitor
   void clrSerial() {
-    serialData = "";
-    notifyListeners();
+    state = "";
+    // notifyListeners();
   }
 
   void getPort(UsbEvent event, int bps) async {
@@ -69,58 +80,62 @@ class and_i extends ChangeNotifier {
   }
 
   void readSerial() {
-    _port?.inputStream?.listen((event) async {
+    _port?.inputStream?.listen((event) {
+      // get the first serial character code
       int cmd = event.first;
 
+      final sense = ref.watch(sensorsProvider);
+
+      // 0x80 last ASCII character code
       if (cmd < 0x80) {
-        serialData += utf8.decode(event);
+        state += utf8.decode(event);
       } else {
         switch (cmd) {
           case ACCELEROMETER:
-            writeSerial(Uint8List.view(sensors.getAcc().buffer));
+            writeSerial(Uint8List.view(sense.acc.buffer));
             break;
           case GYROSCOPE:
-            writeSerial(Uint8List.view(sensors.getGyro().buffer));
+            writeSerial(Uint8List.view(sense.gyro.buffer));
             break;
           case MAGNOMETER:
-            writeSerial(Uint8List.view(sensors.getMagno().buffer));
+            writeSerial(Uint8List.view(sense.magno.buffer));
             break;
           case USR_ACCELEROMETER:
-            writeSerial(Uint8List.view(sensors.getUsrAcc().buffer));
+            writeSerial(Uint8List.view(sense.usrAcc.buffer));
             break;
           case ORIENT:
-            writeSerial(Uint8List.view(sensors.getOrient().buffer));
+            writeSerial(Uint8List.view(sense.orient.buffer));
             break;
           case ABS_ORIENT:
-            writeSerial(Uint8List.view(sensors.getAbsOrient().buffer));
+            writeSerial(Uint8List.view(sense.absOrient.buffer));
             break;
           case LUMEN:
-            writeSerial(Uint8List.view(sensors.getLumen().buffer));
+            writeSerial(Uint8List.view(sense.light.buffer));
             break;
           case HUMIDITY:
-            writeSerial(Uint8List.view(sensors.getHumid().buffer));
+            writeSerial(Uint8List.view(sense.humidity.buffer));
             break;
           case PRESSURE:
-            writeSerial(Uint8List.view(sensors.getPressure().buffer));
+            writeSerial(Uint8List.view(sense.pressure.buffer));
             break;
           case COORDS:
-            await sensors.currLoc().then((value) {
-              Float32List pos = Float32List(3);
-              pos.addAll([value.latitude, value.longitude, value.altitude]);
-              writeSerial(Uint8List.view(pos.buffer));
+            ref.read(sensorsProvider.notifier).currLoc().then((value){
+              state += value.toString();
+              // notifyListeners();
+              writeSerial(Uint8List.view(value.buffer));
             });
             break;
           case FLASHLIGHT:
-            sensors.flash();
-            break;
-          case FLASHLIGHT:
-            sensors.flash();
+            if (event.last == 0) {
+              ref.read(sensorsProvider.notifier).flashOff();
+            } else {
+              ref.read(sensorsProvider.notifier).flashOn();
+            }
             break;
           default:
-            serialData += "$event";
+            state += "$event";
         }
       }
-      notifyListeners();
     });
   }
 

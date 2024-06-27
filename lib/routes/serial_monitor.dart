@@ -1,9 +1,9 @@
-import 'package:and_i/main.dart';
+import 'package:and_i/and_i/and_i.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class Serial_monitor extends ConsumerWidget {
-  Serial_monitor({super.key});
+class serial_monitor extends ConsumerWidget {
+  serial_monitor({super.key});
 
   final ScrollController _scrollController = ScrollController();
 
@@ -29,16 +29,16 @@ class Serial_monitor extends ConsumerWidget {
           Padding(
             padding: const EdgeInsets.all(20.0),
             child: Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-              Text("BPS : ${ref.watch(and_i_Port).buadRate}"),
+              Text("BPS : ${ref.watch(and_i_Port.notifier).buadRate}"),
               ElevatedButton.icon(
                   onPressed: () {
-                    ref.read(and_i_Port).clrSerial();
+                    ref.read(and_i_Port.notifier).clrSerial();
                   },
                   icon: const Icon(Icons.article_rounded),
                   label: const Text("CLEAR"))
             ]),
           ),
-          Text(ref.watch(and_i_Port).serialData),
+          Text(ref.watch(and_i_Port)),
         ],
       ),
     );

@@ -60,40 +60,41 @@ class _EmoticonsState extends ConsumerState<Emoticons> {
     final gemini = ref.watch(geminiProvider);
 
     return GestureDetector(
-        onTap: _speechToText.isNotListening ? _startListening : _stopListening,
-        child: ListView(
-          children: [
-            Padding(
-              padding: const EdgeInsets.all(10),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const AutoSizeText(
-                    "(●'◡'●)",
-                    style: TextStyle(fontSize: 200),
-                    maxLines: 1,
-                  ),
-                  Text(_lastWords),
-                  FutureBuilder<String>(
-                      // initialData: "Hello",
-                      future: gemini.promt(_lastWords),
-                      builder: (context, snapshot) {
-                        if (snapshot.connectionState ==
-                            ConnectionState.waiting) {
-                          return const Text("...");
-                        } else if (snapshot.hasError) {
-                          return Text('Error: ${snapshot.error}');
-                        } else if (snapshot.hasData) {
-                          return Text('${snapshot.data}');
-                        } else {
-                          return const Text("");
-                        }
-                      }),
-                ],
-              ),
+      onTap: _speechToText.isNotListening ? _startListening : _stopListening,
+      child: ListView(
+        children: [
+          Padding(
+            padding: const EdgeInsets.all(10),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const AutoSizeText(
+                  "(●'◡'●)",
+                  style: TextStyle(fontSize: 200),
+                  maxLines: 1,
+                ),
+                Text(_lastWords),
+                FutureBuilder<String>(
+                    // initialData: "Hello",
+                    future: gemini.promt(_lastWords),
+                    builder: (context, snapshot) {
+                      if (snapshot.connectionState == ConnectionState.waiting) {
+                        return const Text("...");
+                      } else if (snapshot.hasError) {
+                        // ScaffoldMessenger.of(context).showSnackBar( SnackBar(content: Text('Error: ${snapshot.error}')));
+                        return Text('${snapshot.error}');
+                        // return Text("data");
+                      } else if (snapshot.hasData) {
+                        return Text('${snapshot.data}');
+                      } else {
+                        return const Text("");
+                      }
+                    }),
+              ],
             ),
-          ],
-        ),
-      );
+          ),
+        ],
+      ),
+    );
   }
 }

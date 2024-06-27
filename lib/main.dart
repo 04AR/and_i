@@ -20,10 +20,12 @@ void main() async{
   runApp(const ProviderScope(child: App()));
 }
 
-final and_i_Port = ChangeNotifierProvider<and_i>((ref) {
-  return and_i();
-});
-
+class SnackBarService {
+  static final scaffoldKey = GlobalKey<ScaffoldMessengerState>();
+  static void showSnackBar({required String content}) {
+    scaffoldKey.currentState?.showSnackBar(SnackBar(content: Text(content)));
+  }
+}
 
 class App extends ConsumerWidget {
   const App({super.key});
@@ -32,18 +34,20 @@ class App extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
 
     final isDarkMode = ref.watch(themeProvider);
+    // Eager initializing and_i provider
+    ref.watch(and_i_Port);
 
     return MaterialApp(
         debugShowCheckedModeBanner: false,
+        scaffoldMessengerKey: SnackBarService.scaffoldKey,
         initialRoute: '/',
         routes: {
           '/': (context) => const home(),
           '/emoticons': (context) => const Emoticons(),
-          '/serial_monitor': (context) => Serial_monitor(),
-          '/settings': (context) => Settings(),
+          '/serial_monitor': (context) => serial_monitor(),
+          '/settings': (context) => const Settings(),
         },
         title: 'And_i',
-        // darkTheme: theme_dark,
         theme: isDarkMode ? theme_dark : theme_light,
       );
   }

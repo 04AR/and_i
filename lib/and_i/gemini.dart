@@ -1,7 +1,7 @@
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 class Gemini {
-  var model;
+  late final model;
 
   Gemini(String apiKey) {
     model = GenerativeModel(

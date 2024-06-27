@@ -1,3 +1,4 @@
+import 'package:and_i/main.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:dropdown_button2/dropdown_button2.dart';
@@ -9,6 +10,7 @@ class home extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+
     return Scaffold(
       appBar: AppBar(
         actions: [
@@ -16,6 +18,7 @@ class home extends ConsumerWidget {
               child: DropdownButton2(
             customButton: const Icon(Icons.more_vert_rounded,size: 30,),
             items: [
+              // Menu Items
               ...MenuItems.items.map(
                 (item) {
                   return DropdownMenuItem<MenuItem>(
@@ -50,7 +53,8 @@ class MenuItem {
 }
 
 abstract class MenuItems {
-  static const List<MenuItem> items = [serialMonitor, camView,settings];
+  // Menu Items widget list
+  static const List<MenuItem> items = [serialMonitor, camView, settings];
 
   static const serialMonitor = MenuItem(text: 'Serial Monitor', icon: Icons.monitor_heart);
   static const camView = MenuItem(text: "CamView", icon: Icons.camera_enhance);
@@ -78,6 +82,8 @@ abstract class MenuItems {
         Navigator.pushNamed(context, '/serial_monitor');
         break;
       case MenuItems.camView:
+        
+        SnackBarService.showSnackBar(content: "CamView");
         break;
       case MenuItems.settings:
         Navigator.pushNamed(context, '/settings');
